@@ -18,9 +18,10 @@ O banco de dados é composto pelas seguintes tabelas:
 
 ## 📊 Consultas e Análises Realizadas
 **1. Top 5 Produtos Mais Vendidos**: 
+
 Os produtos mais vendidos representam a preferência dos consumidores. Isso pode indicar tendências de moda, sazonalidade ou melhor aceitação das variações.
 Esses produtos devem ser prioridade em estoque e marketing.
-Query: 
+- Query: 
 ```SQL
 SELECT P.NomeProduto AS nome_produto,
     SUM(quantidade) AS total_vendido
@@ -30,9 +31,12 @@ GROUP BY P.NomeProduto
 ORDER BY total_vendido DESC
 OFFSET 0 ROWS FETCH NEXT 5 ROWS ONLY;
 ```
+![](imagens/produtos_mais_vendidos.png)
+
 **2. Receita Total de Vendas por Mês**: 
+
 A variação mensal da receita ajuda a identificar sazonalidade. Pode medir o impacto de campanhas de marketing.
-Query:
+- Query:
 ```SQL
 SELECT 
     FORMAT(DataPedido, 'MM-yyyy') AS mes_ano,
@@ -41,17 +45,23 @@ FROM Pedido
 GROUP BY FORMAT(DataPedido, 'MM-yyyy')
 ORDER BY mes_ano;
 ```
+![Print do gráfico](imagens/receita_por_mês.png)
+
 **3. Ticket Médio**: 
+
 Esse indicador é útil para entender o poder de compra do público. Identificar oportunidades de estratégias de aumento do ticket médio.
-Query:
+- Query:
 ``` SQL
 SELECT 
 	SUM (Total) / COUNT (*) AS TicketMedio
 FROM Pedido;
 ```
+![Print do gráfico](imagens/ticket_medio.png)
+
 **4. Clientes que Mais Gastaram**: 
+
 Clientes podem ser potenciais alvo de ações de fidelização como cupons exclusivos ou programa de pontos.
-Query:
+- Query:
 ```sql
 SELECT 
     c.NomeCliente AS nome_cliente,
@@ -62,9 +72,12 @@ GROUP BY c.NomeCliente
 ORDER BY TotalGasto DESC
 OFFSET 0 ROWS FETCH NEXT 5 ROWS ONLY;
 ```
+![Print do gráfico](imagens/clientes_por_gasto.png)
+
 **5. Clientes com Mais de 1 Pedido**: 
 
-Query:
+Analisar o perfil desses clientes recorrentes, pode ajudar a melhorar a experiência e produtos a partir do comportamento desses.
+- Query:
 ```sql
 SELECT 
 	c.NomeCliente As NomeCliente, 
@@ -74,9 +87,12 @@ JOIN Cliente c ON p.IdCliente = c.IdCliente
 GROUP BY c.NomeCliente, p.IdCliente
 HAVING COUNT(IdPedido) > 1;
 ```
+![Print do gráfico](imagens/clientes_recorrentes.png)
+
 **6. Vendas por Categoria**: 
+
 As categorias mais vendidas indicam o que deve ter maior investimento em estoque, marketing e variedade.
-Query:
+- Query:
 ```sql
 SELECT c.NomeCategoria AS Produto,
 	   COUNT(p.IdCategoria) AS QuantidadePedido
@@ -85,8 +101,12 @@ JOIN Categoria c ON p.IdCategoria = c.IdCategoria
 GROUP BY c.NomeCategoria
 ORDER BY QuantidadePedido DESC;
 ```
-**7. Pedidos por Estado**: 
+![Print do gráfico](imagens/categorias_mais_vendidas.png)
+
+**7. Pedidos por Estado** : 
+
 Saber os estados com mais pedidos ajuda na logística e decisões de marketing por Região.
+- Query: 
 ```sql
 SELECT c.Estado AS UF,
 	COUNT(p.IdCliente) AS Quantidade_Pedido
@@ -95,9 +115,12 @@ JOIN Cliente c ON p.IdCliente = c.IdCliente
 GROUP BY c.Estado
 ORDER BY Quantidade_Pedido DESC; 
 ```
+![Print do gráfico](imagens/vendas_por_estado.png)
+
 **8. Receita e Volume por Produto**: 
 
-Query:
+Identificar produtos com alta margem e bom volume e que devem ser priorizados.
+- Query:
 ```sql
 SELECT p.NomeProduto, c.NomeCategoria,
 		COUNT (dp.Idproduto) AS Quantidade,
@@ -109,9 +132,12 @@ JOIN Categoria c ON p.IdCategoria = c.IdCategoria
 GROUP BY p.NomeProduto, c.NomeCategoria
 ORDER BY Receita DESC;
 ```
+![Print do gráfico](imagens/receita_por_produto.png)
+
 **9.  Receita e Volume por Categoria**: 
+
 Permite enxergar o peso de cada categoria na receita total. Identificar se a margem de lucro está alta ou baixa pelo volume vendido.
-Query:
+- Query:
 ```sql
 SELECT  c.NomeCategoria,
 		COUNT (dp.Idproduto) AS Quantidade,
@@ -123,17 +149,8 @@ JOIN Categoria c ON p.IdCategoria = c.IdCategoria
 GROUP BY  c.NomeCategoria
 ORDER BY Receita DESC;
 ```
-**10. Ticket médio por cidade**: 
-Analisar o poder de compra por região especifica, permite direcionar melhor as campanhas e estratégias de marketing.
-Query:
-```sql
-SELECT c.Cidade,
-	SUM (p.Total) / COUNT (*) AS TicketMedio
-FROM Pedido p
-JOIN Cliente c ON p.IdCliente = c.IdCliente
-GROUP BY c.Cidade
-ORDER BY TicketMedio DESC;
-```
+![Print do gráfico](imagens/receita_por_categoria.png)
+
 
 ## 🧠 Análise Descritiva
 Com base nas consultas SQL, foi possível obter insights como:
