@@ -9,6 +9,8 @@ O banco de dados é composto pelas seguintes tabelas:
 - Pedido: pedidos realizados por clientes.
 - DetalhesPedido: itens individuais dos pedidos, com tamanho e quantidade.
 
+![Diagrama Entidade-Relacionamento (DER)](imagens/diagrama.png)
+
 ## 💾 Dados Simulados
 - ✅ 5 categorias
 - ✅ 10 produtos
